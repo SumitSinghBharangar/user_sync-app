@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:user_sync/presentation/blocs/user_list_bloc.dart';
-import 'package:user_sync/presentation/blocs/user_list_event.dart';
-import 'package:user_sync/presentation/blocs/user_list_state.dart';
+import 'package:user_sync/presentation/blocs/user_list/user_list_bloc.dart';
+import 'package:user_sync/presentation/blocs/user_list/user_list_event.dart';
+import 'package:user_sync/presentation/blocs/user_list/user_list_state.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_sync/data/models/user_model.dart';
-import '../../../data/services/api_service.dart';
+import '../../../../data/services/api_service.dart';
 import 'user_list_event.dart';
 import 'user_list_state.dart';
 
