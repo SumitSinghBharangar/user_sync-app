@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:user_sync/presentation/blocs/user_list/user_list_bloc.dart';
 import 'package:user_sync/presentation/blocs/user_list/user_list_event.dart';
 import 'package:user_sync/presentation/blocs/user_list/user_list_state.dart';
+import 'package:user_sync/presentation/screens/user_detail_screen.dart';
+import 'package:user_sync/utils/utils.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -22,7 +24,7 @@ class _UserListScreenState extends State<UserListScreen> {
     super.initState();
     // Trigger initial fetch
     context.read<UserListBloc>().add(const FetchUsers());
-    // Set up infinite scrolling
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
@@ -95,7 +97,14 @@ class _UserListScreenState extends State<UserListScreen> {
                         title: Text('${user.firstName} ${user.lastName}'),
                         subtitle: Text(user.email),
                         onTap: () {
-                          // TODO: Navigate to UserDetailScreen (next step)
+                          showLoading(context);
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            Utils.go(
+                              context: context,
+                              screen: UserDetailScreen(user: user),
+                            );
+                          }
                         },
                       );
                     },

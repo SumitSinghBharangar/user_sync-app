@@ -14,31 +14,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return RepositoryProvider(
+      create: (context) => ApiService(),
+      child: MaterialApp(
+        title: 'UserSync',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: BlocProvider(
+          create: (context) => UserListBloc(context.read<ApiService>()),
+          child: const UserListScreen(),
+        ),
+        debugShowCheckedModeBanner: false,
       ),
-      home: BlocProvider(
-        create: (context) => UserListBloc(ApiService()),
-        child: const UserListScreen(),
-      ),
-      debugShowCheckedModeBanner: false,
     );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }
