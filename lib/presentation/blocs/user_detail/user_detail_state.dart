@@ -16,11 +16,16 @@ class UserDetailLoading extends UserDetailState {}
 class UserDetailLoaded extends UserDetailState {
   final List<Post> posts;
   final List<Todo> todos;
+  final List<Post> localPosts; // Added for local posts
 
-  const UserDetailLoaded({required this.posts, required this.todos});
+  const UserDetailLoaded({
+    required this.posts,
+    required this.todos,
+    this.localPosts = const [],
+  });
 
   @override
-  List<Object> get props => [posts, todos];
+  List<Object> get props => [posts, todos, localPosts];
 }
 
 class UserDetailError extends UserDetailState {

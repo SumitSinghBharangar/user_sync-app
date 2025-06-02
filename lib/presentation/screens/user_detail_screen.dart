@@ -1,4 +1,3 @@
-// lib/presentation/screens/user_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +6,7 @@ import 'package:user_sync/data/models/user_model.dart';
 import '../blocs/user_detail/user_detail_bloc.dart';
 import '../blocs/user_detail/user_detail_event.dart';
 import '../blocs/user_detail/user_detail_state.dart';
+import 'create_post_screen.dart';
 
 class UserDetailScreen extends StatelessWidget {
   final User user;
@@ -21,6 +21,23 @@ class UserDetailScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('${user.firstName} ${user.lastName}'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreatePostScreen(
+                      onPostCreated: (post) {
+                        context.read<UserDetailBloc>().add(AddPost(post));
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -59,6 +76,10 @@ class UserDetailScreen extends StatelessWidget {
                     return Center(child: Text('Error: ${state.message}'));
                   }
                   if (state is UserDetailLoaded) {
+                    final allPosts = [
+                      ...state.localPosts,
+                      ...state.posts
+                    ]; // Combine local and API posts
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -69,7 +90,7 @@ class UserDetailScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
-                        state.posts.isEmpty
+                        allPosts.isEmpty
                             ? const Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Text('No posts available'),
@@ -77,9 +98,9 @@ class UserDetailScreen extends StatelessWidget {
                             : ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: state.posts.length,
+                                itemCount: allPosts.length,
                                 itemBuilder: (context, index) {
-                                  final post = state.posts[index];
+                                  final post = allPosts[index];
                                   return ListTile(
                                     title: Text(post.title),
                                     subtitle: Text(post.body),
