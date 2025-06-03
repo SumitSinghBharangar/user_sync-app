@@ -1,7 +1,8 @@
-// lib/presentation/screens/user_list_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:user_sync/common/app_colors.dart';
+import 'package:user_sync/main.dart';
 import '../blocs/user_list/user_list_bloc.dart';
 import '../blocs/user_list/user_list_event.dart';
 import '../blocs/user_list/user_list_state.dart';
@@ -53,22 +54,49 @@ class _UserListScreenState extends State<UserListScreen> {
     context.read<UserListBloc>().add(const FetchUsers(skip: 0));
   }
 
+  void _toggleTheme() {
+    final currentTheme = Theme.of(context).brightness;
+    final newTheme =
+        currentTheme == Brightness.light ? Brightness.dark : Brightness.light;
+    context.read<ThemeBloc>().add(ToggleTheme(newTheme));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('UserSync'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+            onPressed: _toggleTheme,
+          ),
+        ],
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
             child: TextField(
               controller: _searchController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Search users by name...',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? const Color.fromRGBO(255, 255, 255, 1)
+                        : Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(Icons.search, color: AppColors.signInBox),
+                hintStyle: TextStyle(color: AppColors.hintText),
               ),
             ),
           ),
@@ -103,9 +131,8 @@ class _UserListScreenState extends State<UserListScreen> {
                           title: Text('${user.firstName} ${user.lastName}'),
                           subtitle: Text(user.email),
                           onTap: () {
-                            // Create the UserDetailBloc here and pass it to UserDetailScreen
-                            final userDetailBloc = UserDetailBloc(context.read<ApiService>());
-                            
+                            final userDetailBloc =
+                                UserDetailBloc(context.read<ApiService>());
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -113,7 +140,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                   value: userDetailBloc,
                                   child: UserDetailScreen(
                                     user: user,
-                                    userDetailBloc: userDetailBloc, // Pass the bloc instance
+                                    userDetailBloc: userDetailBloc,
                                   ),
                                 ),
                               ),

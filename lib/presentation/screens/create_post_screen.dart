@@ -1,6 +1,7 @@
 // lib/presentation/screens/create_post_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_sync/common/buttons/dynamic_button.dart';
 import 'package:user_sync/data/models/post_model.dart';
 import 'package:user_sync/data/models/user_model.dart';
 
@@ -52,63 +53,69 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              // Show user info at the top
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(widget.user.image),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Creating post for ${widget.user.firstName} ${widget.user.lastName}',
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                    ],
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                // Show user info at the top
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(widget.user.image),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Creating post for ${widget.user.firstName} ${widget.user.lastName}',
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _bodyController,
-                decoration: const InputDecoration(
-                  labelText: 'Body',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _bodyController,
+                  decoration: const InputDecoration(
+                    labelText: 'Body',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 4,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a body';
+                    }
+                    return null;
+                  },
                 ),
-                maxLines: 4,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a body';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _submitPost,
-                child: const Text('Submit Post'),
-              ),
-            ],
+                const SizedBox(height: 16),
+                DynamicButton.fromText(
+                  text: "Submit Post",
+                  onPressed: _submitPost,
+                ),
+                // ElevatedButton(
+                //   onPressed: _submitPost,
+                //   child: const Text('Submit Post'),
+                // ),
+              ],
+            ),
           ),
         ),
       ),
