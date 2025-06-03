@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../blocs/user_list/user_list_bloc.dart';
 import '../blocs/user_list/user_list_event.dart';
 import '../blocs/user_list/user_list_state.dart';
+import '../blocs/user_detail/user_detail_bloc.dart';
+import '../../data/services/api_service.dart';
 
 import 'user_detail_screen.dart';
 
@@ -101,11 +103,19 @@ class _UserListScreenState extends State<UserListScreen> {
                           title: Text('${user.firstName} ${user.lastName}'),
                           subtitle: Text(user.email),
                           onTap: () {
+                            // Create the UserDetailBloc here and pass it to UserDetailScreen
+                            final userDetailBloc = UserDetailBloc(context.read<ApiService>());
+                            
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    UserDetailScreen(user: user),
+                                builder: (context) => BlocProvider.value(
+                                  value: userDetailBloc,
+                                  child: UserDetailScreen(
+                                    user: user,
+                                    userDetailBloc: userDetailBloc, // Pass the bloc instance
+                                  ),
+                                ),
                               ),
                             );
                           },
