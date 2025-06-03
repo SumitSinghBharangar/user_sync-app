@@ -46,7 +46,7 @@ class ThemeEvent {
 }
 
 class ToggleTheme extends ThemeEvent {
-  ToggleTheme(Brightness brightness) : super(brightness);
+  ToggleTheme(super.brightness);
 }
 
 void main() {
