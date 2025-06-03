@@ -28,11 +28,21 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   }
 
   void _onAddPost(AddPost event, Emitter<UserDetailState> emit) {
-    localPosts.add(event.post);
-    if (state is UserDetailLoaded) {
+    localPosts = [
+      ...localPosts,
+      event.post
+    ]; // Create new list for immutability
+    final currentState = state;
+    if (currentState is UserDetailLoaded) {
       emit(UserDetailLoaded(
-        posts: (state as UserDetailLoaded).posts,
-        todos: (state as UserDetailLoaded).todos,
+        posts: currentState.posts,
+        todos: currentState.todos,
+        localPosts: localPosts,
+      ));
+    } else {
+      emit(UserDetailLoaded(
+        posts: const [],
+        todos: const [],
         localPosts: localPosts,
       ));
     }

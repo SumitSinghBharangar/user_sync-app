@@ -16,7 +16,7 @@ class UserDetailLoading extends UserDetailState {}
 class UserDetailLoaded extends UserDetailState {
   final List<Post> posts;
   final List<Todo> todos;
-  final List<Post> localPosts; // Added for local posts
+  final List<Post> localPosts;
 
   const UserDetailLoaded({
     required this.posts,

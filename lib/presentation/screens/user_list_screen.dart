@@ -2,12 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:provider/provider.dart';
 import '../blocs/user_list/user_list_bloc.dart';
 import '../blocs/user_list/user_list_event.dart';
 import '../blocs/user_list/user_list_state.dart';
 
-import '../../utils/theme_provider.dart';
 import 'user_detail_screen.dart';
 
 class UserListScreen extends StatefulWidget {
@@ -58,21 +56,6 @@ class _UserListScreenState extends State<UserListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('UserSync'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Provider.of<ThemeProvider>(context).themeMode == ThemeMode.system
-                  ? Icons.brightness_auto
-                  : Provider.of<ThemeProvider>(context).themeMode ==
-                          ThemeMode.dark
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
-            ),
-            onPressed: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [

@@ -1,3 +1,4 @@
+// lib/presentation/blocs/user_detail/user_detail_event.dart
 import 'package:equatable/equatable.dart';
 import 'package:user_sync/data/models/post_model.dart';
 

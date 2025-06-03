@@ -1,11 +1,13 @@
 // lib/presentation/screens/create_post_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_sync/data/models/post_model.dart';
 
-class CreatePostScreen extends StatefulWidget {
-  final Function(Post) onPostCreated;
+import '../blocs/user_detail/user_detail_bloc.dart';
+import '../blocs/user_detail/user_detail_event.dart';
 
-  const CreatePostScreen({super.key, required this.onPostCreated});
+class CreatePostScreen extends StatefulWidget {
+  const CreatePostScreen({super.key});
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -30,7 +32,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         title: _titleController.text,
         body: _bodyController.text,
       );
-      widget.onPostCreated(newPost);
+      context.read<UserDetailBloc>().add(AddPost(newPost));
       Navigator.pop(context);
     }
   }
